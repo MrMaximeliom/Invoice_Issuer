@@ -1,7 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets
-
-from Util.permissions import UnisealPermission
+from rest_framework import viewsets , permissions
 
 
 class CityViewSet(viewsets.ModelViewSet):
@@ -23,14 +21,17 @@ class CityViewSet(viewsets.ModelViewSet):
 
       """
     from address.serializers import CitySerializer
-
+    # set view Name as "Create/Modify Cities' Data"
     def get_view_name(self):
         return _("Create/Modify Cities' Data")
 
     from address.models import City
+    # get all Cities from DB
     queryset = City.objects.all()
+    # Specifying serializer class
     serializer_class = CitySerializer
-    permission_classes = [UnisealPermission]
+    # set permission for Admin users only
+    permission_classes = [permissions.IsAdminUser]
 
 
 class CountryViewSet(viewsets.ModelViewSet):
@@ -52,14 +53,17 @@ class CountryViewSet(viewsets.ModelViewSet):
 
       """
     from address.serializers import CountrySerializer
-
+    # set view name as "Create/Modify Countries' Data"
     def get_view_name(self):
         return _("Create/Modify Countries' Data")
 
     from address.models import Country
+    # get all Countries in DB
     queryset = Country.objects.all()
+    # Specifying serializer class
     serializer_class = CountrySerializer
-    permission_classes = [UnisealPermission]
+    # set permission to Admin users only
+    permission_classes = [permissions.IsAdminUser]
 
 
 class StateViewSet(viewsets.ModelViewSet):
@@ -82,13 +86,15 @@ class StateViewSet(viewsets.ModelViewSet):
 
       """
     from address.serializers import StateSerializer
-
+    # set view name as "Create/Modify States' Data"
     def get_view_name(self):
         return _("Create/Modify States' Data")
 
     from address.models import State
+    # get all states from DB
     queryset = State.objects.all()
+    # Specifying serializer class
     serializer_class = StateSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [permissions.IsAdminUser]
 
 

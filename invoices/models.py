@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
+
 #  Invoice class is responsible for modeling Invoice attributes and functions
 class Invoice(models.Model):
     # invoice number
@@ -45,9 +45,12 @@ class Invoice(models.Model):
     )
     # invoice slug field
     slug = models.SlugField(
-        default=slugify(rand_slug()),
         verbose_name=_('Invoice Slug')
     )
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.qr_code)
+        return super().save(*args, **kwargs)
 
 class InvoiceItem(models.Model):
     # foreign key refers to Invoice table
@@ -71,3 +74,12 @@ class InvoiceItem(models.Model):
         blank=False,
         null=False
     )
+    # invoice item slug field
+    slug = models.SlugField(
+        verbose_name=_('Invoice Item Slug')
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.item)
+        return super().save(*args, **kwargs)

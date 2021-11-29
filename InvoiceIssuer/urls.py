@@ -10,14 +10,19 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from accounts import endpoints_urls as accounts_views
+from accounts import endpoints_urls as accounts_endpoints
 from address import endpoints_urls as address_endpoints_urls
+from invoices import  endpoints_urls as invoice_endpoints
 # the router objects responsible for defining the routing functionality
 router = routers.DefaultRouter()
 # changing the default name of API
 router.APIRootView.__name__ = 'Invoice Issuer API'
 # adding API endpoint for registering new users
-router.register(r'accounts/signUp', accounts_views.RegisterUserViewSet, basename='CreateUser')
+router.register(r'accounts/signUp', accounts_endpoints.RegisterUserViewSet, basename='CreateUser')
+# adding API endpoint for creating new invoices or modifying existing ones
+router.register(r'invoice', invoice_endpoints.InvoiceViewSet, basename='Invoice')
+# adding API endpoint for creating new invoice item or modifying existing ones
+router.register(r'invoiceItem', invoice_endpoints.InvoiceItemViewSet, basename='InvoiceItem')
 # adding API endpoint for handling country data
 router.register(r'address/country', address_endpoints_urls.CountryViewSet, basename='Country')
 # adding API endpoint for state data
@@ -38,7 +43,7 @@ urlpatterns = [
     # API authenticating endpoint
     path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # API logout endpoint
-    path('api/logout/', accounts_views.Logout.as_view(), name='logout'),
+    path('api/logout/', accounts_endpoints.Logout.as_view(), name='logout'),
     # API url to favicon.ico
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 ]

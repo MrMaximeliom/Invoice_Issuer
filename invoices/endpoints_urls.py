@@ -54,8 +54,9 @@ class InvoiceItemViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     def get_view_name(self):
         return _("Create/Modify New Invoice Items")
     from .models import InvoiceItem
+    # get all Invoices Items from DB
     queryset = InvoiceItem.objects.all()
-    # specifying serializar class
+    # specifying serializer class
     serializer_class = InvoiceItemSerializer
     # set permission to access this view
     permission_classes = [SenderPermission]

@@ -4,10 +4,9 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
 # this class is responsible of User account management
 class UserAccountManager(BaseUserManager):
-    def create_user(self, full_name, phone_number,email, password=None, **extra_fields):
+    def create_user(self, full_name, phone_number,email,is_customer, password=None, **extra_fields):
         # check if user entered his/her full_name and raise exception if not
         if not full_name:
             raise ValueError(_('Users must provide their full name'))
@@ -20,19 +19,21 @@ class UserAccountManager(BaseUserManager):
         user = self.model(
             full_name=full_name,
             phone_number=phone_number,
-            email=email
+            email=email,
+            is_customer = is_customer
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
     # function that creates a super user
-    def create_superuser(self, full_name, phone_number,email,
+    def create_superuser(self, full_name, phone_number,email,is_customer,
                          password):
         user = self.create_user(
             full_name=full_name,
             phone_number=phone_number,
             email=self.normalize_email(email),
-            password=password
+            password=password,
+            is_customer=is_customer
         )
         user.admin = True
         user.staff = True
@@ -96,25 +97,20 @@ class User(AbstractBaseUser):
     last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
     # user slug field , will be created by default
     slug = models.SlugField(
-        default=slugify(rand_slug()),
         verbose_name=_('User Slug')
     )
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(rand_slug() + "-" + str(self.full_name))
+            self.slug = slugify( "-" + str(self.full_name))
         return super().save(*args, **kwargs)
     # "email field" is the field that will be used in the login process with the password field
     USERNAME_FIELD = 'email'
     # listing required fields
-    REQUIRED_FIELDS = ['password', 'full_name','phone_number'
-                       'username','is_customer']
+    REQUIRED_FIELDS = ['password', 'full_name','phone_number','is_customer']
     objects = UserAccountManager()
     def get_full_name(self):
         # The user is identified by their full name
         return self.full_name
-
-    def get_user_name(self):
-        return self.username
 
     def __str__(self):
         return self.full_name
@@ -132,11 +128,9 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         "Is the user a member of staff?"
-        # return self.user_role == 3
         return self.staff
 
     @property
     def is_admin(self):
         "Is the user a admin member?"
-        # return self.user_role == 1
         return self.admin

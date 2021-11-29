@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         # fields that will be available in the API endpoint later
         fields = (
             'id', 'full_name', 'is_customer',
-                                          'email','city','street_address', 'phone_number', 'password')
+            'email','city','street_address', 'phone_number', 'password')
 
 
 # this class is responsible for providing an endpoint
@@ -61,7 +61,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'full_name', 'is_customer',
-                               'email', 'city', 'street_address', 'phone_number', 'password','password2')
+            'email', 'city', 'street_address', 'phone_number', 'password','password2')
 
 
     # validate that the two password fields are match
@@ -76,8 +76,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             email=validated_data['email'],
             full_name=validated_data['full_name'],
+            is_customer=validated_data['is_customer'],
+            street_address=validated_data['street_address'],
+            city=validated_data['city'],
             phone_number=validated_data['phone_number'],
-            address=validated_data['address'],
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -85,10 +87,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     # update user data
     def update(self, instance, validated_data):
-        instance.phone_number = validated_data['phone_number']
-        instance.full_name = validated_data['full_name']
         instance.email = validated_data['email']
+        instance.full_name = validated_data['full_name']
+        instance.is_customer = validated_data['is_customer']
+        instance.street_address = validated_data['street_address']
+        instance.phone_number = validated_data['phone_number']
+        instance.city = validated_data['city']
         instance.set_password(validated_data['password'])
-        instance.address = validated_data['address']
         instance.save()
         return instance
