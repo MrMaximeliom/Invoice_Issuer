@@ -1,58 +1,16 @@
 from rest_framework import permissions
-class IsAdminOrReadOnly(permissions.BasePermission):
+# class SenderPermission is specifying permissions to Senders users only
+class SenderPermission(permissions.BasePermission):
     def has_permission(self, request, view):
+        # return "True" for senders , "False" for else
+        return not request.user.is_customer
 
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        else:
-            if not request.user.is_anonymous:
-                if request.user.admin:
-                    return True
-                else:
-                    return False
 
-class IsSystemBackEndUser(permissions.BasePermission):
-    """
-    Object-level permission to only allow owners of an object to edit it.
-    Assumes the model instance has an `owner` attribute.
-    """
-    def has_permission(self, request, view):
-
-        # if request.method in permissions.SAFE_METHODS:
-        #     return False
-        # else:
-        if not request.user.is_anonymous:
-            if request.user.staff or request.user.admin:
-                return True
-            else:
-                return False
-
+# class IsAnonymousUser is specifying permissions to Anonymous and Admin users only
 class IsAnonymousUser(permissions.BasePermission):
-    """
-    Object-level permission to only allow owners of an object to edit it.
-    Assumes the model instance has an `owner` attribute.
-    """
-
     def has_permission(self, request, view):
-
-        # if request.method in permissions.SAFE_METHODS:
-        #     return False
-        # else:
+        # return "True" for anonymous and admin users , "False" for else
         if request.user.is_anonymous or request.user.admin:
             return True
         else:
             return False
-
-class UnisealPermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        else:
-            if not request.user.is_anonymous:
-                if request.user.admin:
-                    return True
-            else:
-                return False
-
-

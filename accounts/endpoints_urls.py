@@ -41,7 +41,7 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
         }
       """
     from accounts.serializers import RegisterSerializer
-
+    # set view name as "Register New User"
     def get_view_name(self):
         return _("Register New User")
 
