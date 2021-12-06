@@ -1,0 +1,1 @@
+web: gunicorn InvloiceIssuer.wsgi --log-file -
