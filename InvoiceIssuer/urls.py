@@ -33,17 +33,17 @@ router.register(r'address/city', address_endpoints_urls.CityViewSet, basename='C
 # list of all available routes
 urlpatterns = [
     # listing all urls endpoints for API
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
     # listing all admin urls
     path('admin/', admin.site.urls),
     # API login endpoint
-    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # API refresh login token endpoint
-    path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # API authenticating endpoint
-    path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # API logout endpoint
-    path('api/logout/', accounts_endpoints.Logout.as_view(), name='logout'),
+    path('logout/', accounts_endpoints.Logout.as_view(), name='logout'),
     # API url to favicon.ico
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 ]
