@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from Util.permissions import SenderPermission
 
 # this class is used to create new Invoices
-class InvoiceViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
+class InvoiceViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to create new invoices
         permissions to this view is restricted as the following:
@@ -34,7 +34,7 @@ class InvoiceViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
 
 
 # this class is used to create invoice items
-class InvoiceItemViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
+class InvoiceItemViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to create new invoice items
         permissions to this view is restricted as the following:

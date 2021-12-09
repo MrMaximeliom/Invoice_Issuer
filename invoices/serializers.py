@@ -10,7 +10,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
         # choosing "Invoice Model" to serialize its objects
         model = Invoice
         # all fields of the Invoice model - except of "slug" field - will be available in the API endpoint later
-        exclude = ('slug',)
+        exclude = ('slug','number','qr_code',)
 
 
 # this class is responsible to make the serialization processing for Invoice data model

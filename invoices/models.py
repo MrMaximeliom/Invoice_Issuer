@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
-
+from Util.Utilities import random_string_generator
 #  Invoice class is responsible for modeling Invoice attributes and functions
 class Invoice(models.Model):
     # invoice number
@@ -9,6 +9,7 @@ class Invoice(models.Model):
         max_length=300,
         blank=False,
         null=False,
+        default=slugify(random_string_generator(12)),
         unique=True
     )
     # invoice QR code
@@ -16,6 +17,7 @@ class Invoice(models.Model):
         max_length=450,
         blank=False,
         null=False,
+        default=slugify(random_string_generator(12)),
         unique=True
     )
     # invoice due date
@@ -51,6 +53,8 @@ class Invoice(models.Model):
         if not self.slug:
             self.slug = slugify(self.qr_code)
         return super().save(*args, **kwargs)
+    def __str__(self):
+        return self.number
 
 class InvoiceItem(models.Model):
     # foreign key refers to Invoice table
