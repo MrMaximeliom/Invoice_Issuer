@@ -71,7 +71,7 @@ class User(AbstractBaseUser):
         verbose_name=_("Is Customer"),
         blank=False,
         null=False,
-        default=True
+        default=False
     )
     # user street address
     street_address = models.CharField(

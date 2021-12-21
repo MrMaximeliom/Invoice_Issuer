@@ -60,7 +60,9 @@ class InvoiceItem(models.Model):
     # foreign key refers to Invoice table
     invoice_id = models.ForeignKey(
         Invoice,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="invoice"
+
     )
     # item field, bought by the customer
     item = models.CharField(

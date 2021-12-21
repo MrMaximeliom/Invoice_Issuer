@@ -39,7 +39,8 @@ class State(models.Model):
     # foreign key refers to Country table
     country = models.ForeignKey(
         Country,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='states'
     )
     # slug field
     slug = models.SlugField(
@@ -65,6 +66,7 @@ class City(models.Model):
     State = models.ForeignKey(
         State,
         on_delete=models.CASCADE,
+        related_name='cities'
     )
     # slug field
     slug = models.SlugField(
